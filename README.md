@@ -37,3 +37,14 @@ The training is started.
 ## Logs
 
 Logs are saved into IGFS so that you can see them in TensorBoard. TBD.
+
+```diff
+public class Test
+{
+   public static void Main()
+   {
+-      System.Console.WriteLine("Hello, World!");
++      System.Console.WriteLine("Rock all night long!");
+   }
+}
+```
