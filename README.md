@@ -15,7 +15,7 @@ The model changes required to run the model on Apache Ignite are gathered in `mo
 
 We need to replace `tf.data.FixedLengthRecordDataset` by `IgniteDataset`:
 
-```python&diff
+```diff
    Returns:
      A dataset that can be used for iteration.
    """
@@ -30,7 +30,7 @@ We need to replace `tf.data.FixedLengthRecordDataset` by `IgniteDataset`:
 
 We need to specify new folder for checkpoints on IGFS filesystem:
 
-```python&diff
+```diff
  def define_cifar_flags():
    resnet_run_loop.define_resnet_flags()
    flags.adopt_module_key_flags(resnet_run_loop)
@@ -48,7 +48,7 @@ We need to specify new folder for checkpoints on IGFS filesystem:
 
 And we need to update `RunConfig` to use proper `DistributedStrategy`:
 
-```python&diff
+```diff
    run_config = tf.estimator.RunConfig(
 -      train_distribute=distribution_strategy,
 +      experimental_distribute=tf.contrib.distribute.DistributeConfig(
@@ -107,15 +107,29 @@ The training is started. Your current tab shows you the output of the client scr
 
 ## Logs
 
-Logs are saved into IGFS so that you can see them in TensorBoard. TBD.
+Logs are saved into IGFS so that you can see them in TensorBoard. TensorBoard can't work with IGFS out-of-the-box (we're working on it), so you need to slightly modify the starting script. First of all you need to setup correct version of `tensorflow` and `tensorboard`:
 
-```diff
-public class Test
-{
-   public static void Main()
-   {
--      System.Console.WriteLine("Hello, World!");
-+      System.Console.WriteLine("Rock all night long!");
-   }
-}
+```bash
+$ pip3 uninstall tenosrflow tensorboard
+$ pip3 install tensorflow==1.13.0.rc0
 ```
+
+After that you need to find the `__init__.py` of `tensorboard`. You can do it using the following command:
+
+```bash
+$ pip3 show tensorboard
+```
+
+And finally, you need to add the following like into `__init__.py` of `tensorboard`:
+
+```bash
+import tensorflow.contrib.ignite.python.ops.igfs_ops
+```
+
+When it's done you can start `tensorboard` using the following command:
+
+```bash
+. start-tensorboard.sh
+```
+
+After that `tensorboard` UI will be available by the following link: (http://localhost:6006)[http://localhost:6006].
