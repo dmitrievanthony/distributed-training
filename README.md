@@ -1,10 +1,27 @@
 ### Distributed deep learning with TensorFlow and Apache Ignite
 
-This repository contains code that demonstrates how to work with distributed deep learning with TensorFlow and Apache Ignite.
+This repository contains a demo of distributed deep learning with TensorFlow and Apache Ignite.
 
 ## Initialization
 
-To initialize the workspace you need to run `init.sh` script that downloads and builds Apache Ignite and downloads Cifar10.
+Before you start a demo you need to initialize workspace. The initialization include:
+
+* Downloading and building of Apache Ignite.
+* Downloading Cifar10 dataset.
+* Downloading official TensorFlow models repository.
+* Updating ResNet Cifar10 model (see `models.diff` patch).
+
+To initialize the workspace you can use a single command:
+
+```
+$ init.sh
+```
+
+To clean the workspace:
+
+```
+$ clear.sh
+```
 
 ## Build and start Apache Ignite
 
