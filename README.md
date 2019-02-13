@@ -15,7 +15,7 @@ The model changes required to run the model on Apache Ignite are gathered in `mo
 
 We need to replace `tf.data.FixedLengthRecordDataset` by `IgniteDataset`:
 
-```diff
+```python&diff
    Returns:
      A dataset that can be used for iteration.
    """
@@ -30,7 +30,7 @@ We need to replace `tf.data.FixedLengthRecordDataset` by `IgniteDataset`:
 
 We need to specify new folder for checkpoints on IGFS filesystem:
 
-```diff
+```python&diff
  def define_cifar_flags():
    resnet_run_loop.define_resnet_flags()
    flags.adopt_module_key_flags(resnet_run_loop)
@@ -48,7 +48,7 @@ We need to specify new folder for checkpoints on IGFS filesystem:
 
 And we need to update `RunConfig` to use proper `DistributedStrategy`:
 
-```diff
+```python&diff
    run_config = tf.estimator.RunConfig(
 -      train_distribute=distribution_strategy,
 +      experimental_distribute=tf.contrib.distribute.DistributeConfig(
