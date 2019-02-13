@@ -14,7 +14,7 @@ Before you start a demo you need to initialize workspace. The initialization inc
 To initialize the workspace you can use a single command:
 
 ```
-$ init.sh
+$ . init.sh
 ```
 
 To clean the workspace:
