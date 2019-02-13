@@ -67,7 +67,7 @@ $ . init.sh
 To clean the workspace:
 
 ```bash
-$ clear.sh
+$ . clear.sh
 ```
 
 ## Build and start Apache Ignite
