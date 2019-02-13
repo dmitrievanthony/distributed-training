@@ -105,7 +105,7 @@ ignite-tf.sh start TEST_DATA models python3 official/resnet/cifar10_main.py
 
 The training is started. Your current tab shows you the output of the client script. Docker compose tab shows you logs of worker nodes.
 
-## Logs
+## TensorBoard
 
 Logs are saved into IGFS so that you can see them in TensorBoard. TensorBoard can't work with IGFS out-of-the-box (we're working on it), so you need to slightly modify the starting script. First of all you need to setup correct version of `tensorflow` and `tensorboard`:
 
