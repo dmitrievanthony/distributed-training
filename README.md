@@ -48,11 +48,13 @@ $ python3 load-cache.py
 
 ## Start training
 
-When cache is filled you can start training. The model is taken from list of official models of TensorFlow and slightly modified:
+When Cifar10 dataset and susccessfully loaded into Apache Ignite cluster cache you can start training:
 
 ```
 ignite-tf.sh start TEST_DATA models python3 official/resnet/cifar10_main.py
 ```
+
+*If ignite-tf.sh is not in your `PATH` you can find it by the following path: `./apache-ignite-2.7.0-SNAPSHOT-bin/bin/ignite-tf.sh`.*
 
 The training is started.
 
