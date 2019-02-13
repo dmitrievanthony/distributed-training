@@ -1,5 +1,5 @@
 diff -uar models-my/official/resnet/cifar10_main.py models/official/resnet/cifar10_main.py
---- models-my/official/resnet/cifar10_main.py	2019-02-13 12:54:50.943172776 +0300
+--- models/official/resnet/cifar10_main.py	2019-02-13 12:54:50.943172776 +0300
 +++ models/official/resnet/cifar10_main.py	2019-02-13 12:56:06.408195123 +0300
 @@ -19,6 +19,8 @@
  from __future__ import print_function
@@ -58,7 +58,7 @@ diff -uar models-my/official/resnet/cifar10_main.py models/official/resnet/cifar
                            image_bytes_as_serving_input=False)
  
 diff -uar models-my/official/resnet/resnet_run_loop.py models/official/resnet/resnet_run_loop.py
---- models-my/official/resnet/resnet_run_loop.py	2019-02-13 12:54:50.943172776 +0300
+--- models/official/resnet/resnet_run_loop.py	2019-02-13 12:54:50.943172776 +0300
 +++ models/official/resnet/resnet_run_loop.py	2019-02-13 12:58:10.701746369 +0300
 @@ -27,6 +27,7 @@
  import math
