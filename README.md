@@ -13,24 +13,29 @@ Before you start a demo you need to initialize workspace. The initialization inc
 
 To initialize the workspace you can use a single command:
 
-```
+```bash
 $ . init.sh
 ```
 
 To clean the workspace:
 
-```
+```bash
 $ clear.sh
 ```
 
 ## Build and start Apache Ignite
 
+When workspace is initialized you can build Apache Ignite Docker image (that includes TensorFlow 1.13.0rc0 and Apache Ignite) using the following command:
 The convenient way to start Apache Ignite cluster is to use Docker Compose:
 
+```bash
+$ docker-compose build
 ```
-docker-compose build
-docker-compose up --scale ignite-server=4
 
+When Docker image is ready you can start Apache Ignite cluster using Docker Compose:
+
+```bash
+$ docker-compose up --scale ignite-server=4
 ```
 
 ## Fill cache
