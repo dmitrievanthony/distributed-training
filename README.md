@@ -132,4 +132,4 @@ When it's done you can start `tensorboard` using the following command:
 . start-tensorboard.sh
 ```
 
-After that `tensorboard` UI will be available by the following link: (http://localhost:6006)[http://localhost:6006].
+After that `tensorboard` UI will be available by the following link: [http://localhost:6006](http://localhost:6006).
