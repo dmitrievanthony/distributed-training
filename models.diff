@@ -1,0 +1,107 @@
+Only in models/official/resnet: cifar10_download_and_extract.py
+diff -uar models/official/resnet/cifar10_main.py models-old/official/resnet/cifar10_main.py
+--- models/official/resnet/cifar10_main.py	2019-02-13 11:57:45.323719085 +0300
++++ models-old/official/resnet/cifar10_main.py	2019-02-12 14:34:46.759675189 +0300
+@@ -19,6 +19,8 @@
+ from __future__ import print_function
+ 
+ import os
++import sys
++import json
+ 
+ from absl import app as absl_app
+ from absl import flags
+@@ -29,6 +31,9 @@
+ from official.utils.flags import core as flags_core
+ from official.utils.logs import logger
+ 
++from tensorflow.contrib.ignite import IgniteDataset
++import tensorflow.contrib.ignite.python.ops.igfs_ops
++
+ HEIGHT = 32
+ WIDTH = 32
+ NUM_CHANNELS = 3
+@@ -68,7 +73,8 @@
+ def parse_record(raw_record, is_training, dtype):
+   """Parse CIFAR-10 image and label from a raw record."""
+   # Convert bytes to a vector of uint8 that is record_bytes long.
+-  record_vector = tf.decode_raw(raw_record, tf.uint8)
++  #record_vector = tf.decode_raw(raw_record, tf.uint8)
++  record_vector = raw_record
+ 
+   # The first byte represents the label, which we convert from uint8 to int32
+   # and then to one-hot.
+@@ -125,8 +131,9 @@
+   Returns:
+     A dataset that can be used for iteration.
+   """
+-  filenames = get_filenames(is_training, data_dir)
+-  dataset = tf.data.FixedLengthRecordDataset(filenames, _RECORD_BYTES)
++  #filenames = get_filenames(is_training, data_dir)
++  #dataset = tf.data.FixedLengthRecordDataset(filenames, _RECORD_BYTES)
++  dataset = IgniteDataset("TEST_DATA", local=True).map(lambda row: row['val'])
+ 
+   return resnet_run_loop.process_record_dataset(
+       dataset=dataset,
+@@ -230,15 +237,14 @@
+       fine_tune=params['fine_tune']
+   )
+ 
+-
+ def define_cifar_flags():
+   resnet_run_loop.define_resnet_flags()
+   flags.adopt_module_key_flags(resnet_run_loop)
+   flags_core.set_defaults(data_dir='/tmp/cifar10_data/cifar-10-batches-bin',
+-                          model_dir='/tmp/cifar10_model',
++                          model_dir='igfs:///tmp/cifar10_model',
+                           resnet_size='56',
+                           train_epochs=182,
+-                          epochs_between_evals=10,
++                          epochs_between_evals=1,
+                           batch_size=128,
+                           image_bytes_as_serving_input=False)
+ 
+Only in models-old/official/resnet: __pycache__
+diff -uar models/official/resnet/resnet_run_loop.py models-old/official/resnet/resnet_run_loop.py
+--- models/official/resnet/resnet_run_loop.py	2019-02-13 11:57:45.327719086 +0300
++++ models-old/official/resnet/resnet_run_loop.py	2019-02-12 13:01:49.463206012 +0300
+@@ -27,6 +27,7 @@
+ import math
+ import multiprocessing
+ import os
++import json
+ 
+ # pylint: disable=g-bad-import-order
+ from absl import flags
+@@ -475,8 +476,16 @@
+ 
+   # Creates a `RunConfig` that checkpoints every 24 hours which essentially
+   # results in checkpoints determined only by `epochs_between_evals`.
++  print(os.environ)
+   run_config = tf.estimator.RunConfig(
+-      train_distribute=distribution_strategy,
++      #train_distribute=distribution_strategy,
++      experimental_distribute=tf.contrib.distribute.DistributeConfig(
++        train_distribute=tf.contrib.distribute.CollectiveAllReduceStrategy(),
++        #train_distribute=tf.contrib.distribute.ParameterServerStrategy(),
++        eval_distribute=tf.contrib.distribute.MirroredStrategy(),
++        #remote_cluster={"worker": ["localhost:10000", "localhost:10001"], "chief":["localhost:10002"]}
++        remote_cluster=json.loads(os.environ['TF_CLUSTER'])
++      ),
+       session_config=session_config,
+       save_checkpoints_secs=60*60*24)
+ 
+@@ -560,8 +569,11 @@
+     tf.logging.info('Starting cycle: %d/%d', cycle_index, int(n_loops))
+ 
+     if num_train_epochs:
+-      classifier.train(input_fn=lambda: input_fn_train(num_train_epochs),
+-                       hooks=train_hooks, max_steps=flags_obj.max_train_steps)
++      tf.estimator.train_and_evaluate(
++        classifier,
++        train_spec=tf.estimator.TrainSpec(input_fn=lambda: input_fn_train(num_train_epochs), hooks=train_hooks, max_steps=flags_obj.max_train_steps),
++        eval_spec=tf.estimator.EvalSpec(input_fn=input_fn_eval, steps=flags_obj.max_train_steps)
++      )
+ 
+     tf.logging.info('Starting to evaluate.')
+ 

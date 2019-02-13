@@ -32,4 +32,8 @@ cd ../..
 echo "Downloading cifar10..."
 python3 cifar10_download_and_extract.py
 
+echo "Downloading models..."
+git clone https://github.com/tensorflow/models.git --depth 1 --branch r1.13.0
+rm -rf models/research models/samples models/tutorials models/.git
+
 echo "Initialization completed"
