@@ -36,5 +36,6 @@ echo "Downloading models..."
 rm -rf models
 git clone https://github.com/tensorflow/models.git --depth 1 --branch r1.13.0
 rm -rf models/research models/samples models/tutorials models/.git
+patch -p0 < models.diff
 
 echo "Initialization completed"
