@@ -40,10 +40,10 @@ $ docker-compose up --scale ignite-server=4
 
 ## Fill cache
 
-When Apache Ignite cluster is running you can fill the cache. You can make it using the following script:
+When Apache Ignite cluster is up and running you can save Cifar10 dataset into Apache Ignite cluster cache using the following command:
 
-```
-python3 load-cache.py
+```bash
+$ python3 load-cache.py
 ```
 
 ## Start training
