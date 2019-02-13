@@ -2,6 +2,12 @@
 
 This repository contains a demo of distributed deep learning with TensorFlow and Apache Ignite.
 
+-   [Initialization](#initialization)
+-   [Build and start Apache Ignite](#build-and-start-apache-ignite)
+-   [Fill cache](#fill-cache)
+-   [Start training](#start-training)
+-   [TensorBoard](#tensorboard)
+
 ## Initialization
 
 Before you start a demo you need to initialize workspace. The initialization include:
