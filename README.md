@@ -82,7 +82,7 @@ $ docker-compose build
 When Docker image is ready you can start Apache Ignite cluster using Docker Compose:
 
 ```bash
-$ docker-compose up --scale ignite-server=4
+$ docker-compose up --scale ignite-server=2
 ```
 
 ## Fill cache
