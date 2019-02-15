@@ -26,6 +26,18 @@
         Alter configuration below as needed.
     -->
     <bean id="grid.cfg" class="org.apache.ignite.configuration.IgniteConfiguration">
+        <property name="dataStorageConfiguration">
+            <bean class="org.apache.ignite.configuration.DataStorageConfiguration">
+                <property name="defaultDataRegionConfiguration">
+                    <bean class="org.apache.ignite.configuration.DataRegionConfiguration">
+                        <property name="name" value="Default_Region"/>
+                        <property name="maxSize" value="#{1L * 1024 * 1024 * 1024}"/>
+                    </bean>
+                </property>
+                <property name="systemRegionInitialSize" value="#{1L * 1024 * 1024 * 1024}" />
+                <property name="systemRegionMaxSize" value="#{1L * 1024 * 1024 * 1024}" />
+            </bean>
+        </property>
         <property name="fileSystemConfiguration">
             <list>
                 <bean class="org.apache.ignite.configuration.FileSystemConfiguration">
@@ -42,5 +54,6 @@
                 </bean>
             </list>    
         </property>
+        
     </bean>
 </beans>

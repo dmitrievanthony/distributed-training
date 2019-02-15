@@ -16,7 +16,8 @@ cache = client.create_cache('TEST_DATA')
 
 for filename in get_filenames(True, '/tmp/cifar10_data/cifar-10-batches-bin'):
   batch = open(filename, 'rb')
-  while (True):
+  for _ in range(500):
+  #while (True):
      sample = batch.read(batch_size)
      
      if len(sample) == 0:
