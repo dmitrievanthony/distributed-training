@@ -140,8 +140,6 @@ When it's done you can start `tensorboard` using the following command:
 
 After that `tensorboard` UI will be available by the following link: [http://localhost:6006](http://localhost:6006).
 
-## TensorBoard Plots
-
 ![accuracy](https://s3.eu-central-1.amazonaws.com/dmitrievanthony-habrahabr/accuracy.png)
 ![cross-entropy](https://s3.eu-central-1.amazonaws.com/dmitrievanthony-habrahabr/cross-entropy.png)
 ![train-accuracy](https://s3.eu-central-1.amazonaws.com/dmitrievanthony-habrahabr/train_accuracy.png)
